@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 
 @Data
@@ -30,9 +33,11 @@ public class Category implements Serializable {
     private Integer status;
 
     //创建时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createTime;
 
     //更新时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updateTime;
 
     //创建人
