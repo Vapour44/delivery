@@ -32,6 +32,7 @@ public class DishVO implements Serializable {
     private Integer status;
     //更新时间
     private LocalDateTime updateTime;
+
     //分类名称
     private String categoryName;
     //菜品关联的口味

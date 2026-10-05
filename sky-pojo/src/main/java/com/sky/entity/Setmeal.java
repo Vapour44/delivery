@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 套餐
@@ -46,4 +48,6 @@ public class Setmeal implements Serializable {
     private Long createUser;
 
     private Long updateUser;
+
+
 }
