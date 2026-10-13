@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.OrderMapper">
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into orders (number, status, user_id, address_book_id, order_time, checkout_time, pay_method, pay_status, amount, remark, phone, address, user_name, consignee, cancel_reason, rejection_reason, cancel_time, estimated_delivery_time, delivery_time, pack_amount, tableware_number) VALUES
+        (#{number}, #{status}, #{userId}, #{addressBookId}, #{orderTime}, #{checkoutTime}, #{payMethod}, #{payStatus}, #{amount}, #{remark}, #{phone}, #{address}, #{userName}, #{consignee}, #{cancelReason}, #{rejectionReason}, #{cancelTime}, #{estimatedDeliveryTime}, #{deliveryTime}, #{packAmount}, #{tablewareNumber})
+    </insert>
+    <update id="update">
+        update orders
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus},
+            </if>
+            <if test="payMethod != null">
+                pay_method = #{payMethod},
+            </if>
+            <if test="cancelReason != null">
+                cancel_reason = #{cancelReason},
+            </if>
+            <if test="rejectionReason != null">
+                rejection_reason = #{rejectionReason},
+            </if>
+            <if test="cancelTime != null">
+                cancel_time = #{cancelTime},
+            </if>
+            <if test="checkoutTime != null">
+                checkout_time = #{checkoutTime},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="historyOrders" resultType="com.sky.entity.Orders">
+        select * from orders
+        <where>
+            <if test="number != null">
+                and number like CONCAT('%', #{number}, '%')
+            </if>
+            <if test="phone != null">
+                and phone like CONCAT('%', #{phone}, '%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="beginTime != null and endTime != null">
+                and order_time between #{beginTime} and #{endTime}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+        order by order_time desc
+    </select>
+    <select id="conditionSearch" resultType="com.sky.entity.Orders">
+        select * from orders
+        <where>
+            <if test="number != null">
+                and number like CONCAT('%', #{number}, '%')
+            </if>
+            <if test="phone != null">
+                and phone like CONCAT('%', #{phone}, '%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="beginTime != null and endTime != null">
+                and order_time between #{beginTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+    <select id="getTurnover" resultType="java.util.Map">
+        select Date(order_time) as date,coalesce(sum(amount),0) as turnover from orders where order_time between #{begin} and #{end} and status = 5 group by Date(order_time);
+    </select>
+    <select id="getTop10Orders" resultType="java.util.Map">
+        select od.name as dishName,sum(od.number) as dishCount from order_detail as od ,orders as o where o.id = od.order_id and o.order_time between #{begin} and #{end} and o.status = 5 group by od.name order by dishCount desc ;
+    </select>
+    <select id="getOrderCount" resultType="java.util.Map">
+        select Date(order_time) as date,count(id) as OrderCount from orders where order_time between #{beginTime} and #{endTime} group by Date(order_time);
+
+    </select>
+    <select id="getEffectiveCount" resultType="java.util.Map">
+        select Date(order_time) as date,count(id) as EffectiveCount from orders where order_time between #{beginTime} and #{endTime} and status = 5 group by Date(order_time);
+
+    </select>
+
+
+</mapper>

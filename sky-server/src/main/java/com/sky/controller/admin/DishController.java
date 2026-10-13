@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
-@RestController
+@RestController("adminDishController")
 @RequestMapping("/admin/dish")
 
 public class DishController {
