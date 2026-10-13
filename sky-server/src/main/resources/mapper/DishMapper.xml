@@ -68,5 +68,4 @@
         WHERE sd.dish_id = #{id}
           AND s.status = 1;
     </select>
-
 </mapper>

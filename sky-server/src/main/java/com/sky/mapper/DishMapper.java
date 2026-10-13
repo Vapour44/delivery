@@ -40,4 +40,7 @@ public interface DishMapper {
     List<Dish> list(Dish dish);
 
     int countDishInSet(Dish dish);
+
+    @Select("select count(id) from dish where status = #{status}")
+    Integer countByStatus(Integer status);
 }

@@ -30,6 +30,9 @@ public interface OrderMapper {
     @Select("select count(*) from orders where status = #{deliveryInProgress}")
     Integer countStatus(Integer deliveryInProgress);
 
+    @Select("select count(*) from orders")
+    Integer countAll();
+
     @Select("select * from orders where number = #{number} and user_id = #{userId}")
     Orders getByNumber(Orders orders);
 
